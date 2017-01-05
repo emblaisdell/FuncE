@@ -1,0 +1,33 @@
+(
+include(str),
+setfg(encode,[obj](
+
+)),
+setfg(decode,[json,obj](
+
+)),
+setfg(foreach,[obj,func](
+	setn(middle,str(concat,str(substr,get(get(obj)),1,math(str(length,get(get(obj))),-,2)),\(comma))),
+	if(comp(str(substr,get(get(obj)),0,1),==,\(lb)),(
+		setn(index,0)
+		setn(slashIndex,slashIndexOf(get(middle),\(comma))),
+		setn(nextfunc,get(func)),
+		while(comp(get(slashIndex),!=,-1),(
+			nextfunc(get(index),str(substr,get(middle),0,get(slashIndex))),
+			set(middle,str(substr,get(middle),math(get(slashIndex),+,1))),
+			set(slashIndex,slashIndexOf(get(middle),\(comma))),
+			set(index,math(get(index),+,1))
+		))
+	),if(comp(str(substr,get(get(obj)),0,1),==,{),(
+		setn(slashIndex,slashIndexOf(get(middle),\(comma))),
+		setn(nextfunc,get(func)),
+		while(comp(get(slashIndex),!=,-1),(
+			set(key,str(substr,get(middle),0,get(slashIndex))),
+			nextfunc(get(key),get(str(concat,get(obj),.,get(key)))),
+			set(middle,str(substr,get(middle),math(get(slashIndex),+,1))),
+			set(slashIndex,slashIndexOf(get(middle),\(comma))),
+			set(index,math(get(index),+,1))
+		))
+	))
+))
+)

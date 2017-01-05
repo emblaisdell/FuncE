@@ -1,0 +1,39 @@
+(
+setfg(indexOf,[string,substr](
+	set(string,string()),
+	set(substr,substr()),
+	setn(out,-1),
+	for(i,0,math(math(str(length,get(string)),-,str(length,get(substr))),+,1),(
+		if(comp(str(substr,get(string),get(i),str(length,get(substr))),==,get(substr)),(
+			set(out,get(i)),
+			set(i,str(length,get(string)))
+		))
+	)),
+	get(out)
+)),
+setfg(replace,[subject,find,rep](
+	set(subject,subject()),
+	set(find,find()),
+	set(rep,rep()),
+	setn(pos,indexOf(get(subject),get(find))),
+	if(comp(get(pos),=,-1),
+		get(subject),
+		str(concat,str(substr,get(subject),0,get(pos)),get(rep),
+			setn(nextSubject,str(substr,get(subject),math(get(pos),+,str(length,get(find))))),
+			setn(nextFind,get(find)),
+			setn(nextRep,get(rep)),
+			replace(get(nextSubject),get(nextFind),get(nextRep))
+		)
+	)
+)),
+setfg(split,[string,delim](
+	set(string,string()),
+	set(delim,delim()),
+	str(concat,\(lb),replace(get(string),get(delim),\(comma)),\(rb))
+)),
+setfg(join,[arr,glue](
+	setn(arr,arr()),
+	setn(glue,glue()),
+	replace(str(substr,get(arr),1,math(str(length,get(arr)),-,2)),\(comma),get(glue))
+))
+)
